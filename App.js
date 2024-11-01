@@ -8,12 +8,21 @@ export default function App() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getDoguinhos();
-      setPhotos(data);
-      setLoading(false);
+      try {
+        const data = await getDoguinhos();
+        setPhotos(data);
+      } catch (error) {
+        console.error("Erro ao carregar fotos: ", error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchData();
   }, []);
+
+  const renderPhoto = ({ item }) => (
+    <Image source={{ uri: item.url }} style={styles.image} />
+  );
 
   if (loading) {
     return (
@@ -29,10 +38,8 @@ export default function App() {
       <Text style={styles.title}>Fotinhas de doguinhos</Text>
       <FlatList
         data={photos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Image source={{ uri: item.url }} style={styles.image} />
-        )}
+        keyExtractor={(item, index) => item.id || index.toString()}  // Usa o index como fallback
+        renderItem={renderPhoto}
       />
     </View>
   );
