@@ -38,7 +38,7 @@ export default function App() {
       <Text style={styles.title}>Fotinhas de doguinhos</Text>
       <FlatList
         data={photos}
-        keyExtractor={(item, index) => item.id || index.toString()}
+        keyExtractor={(item, index) => item.id || index.toString()}  // Usa o index como fallback
         renderItem={renderPhoto}
       />
     </View>
